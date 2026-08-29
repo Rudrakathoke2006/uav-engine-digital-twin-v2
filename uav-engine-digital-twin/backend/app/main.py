@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api import auth, missions, telemetry, twin, analytics, alerts, maintenance, simulation, replay
+from app.api import auth, missions, telemetry, twin, analytics, alerts, maintenance, simulation, replay, gcs
 from app.websocket import stream
 
 app = FastAPI(title="UAV Engine Digital Twin API")
@@ -13,6 +13,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(gcs.router, prefix="/api")
 app.include_router(auth.router, prefix="/api")
 app.include_router(missions.router, prefix="/api")
 app.include_router(telemetry.router, prefix="/api")

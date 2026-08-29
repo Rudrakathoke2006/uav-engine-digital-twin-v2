@@ -6,9 +6,15 @@ __pycache__/
 .Python
 
 # SQLite Database Files
-*.db
+*.db-shm
+*.db-wal
 *.sqlite
 *.sqlite3
+
+# Node & Build Outputs
+node_modules/
+dist/
+build/
 
 # Virtual Environments
 venv/
@@ -20,3 +26,5 @@ env/
 .idea/
 .DS_Store
 Thumbs.db
+
+.vercel
