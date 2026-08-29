@@ -563,10 +563,7 @@ hist_entry = {**frame, **subsystem_health["subsystems"], "ehi": subsystem_health
 st.session_state.telemetry_history.append(hist_entry)
 
 # Top Flight Avionics GCS Header Bar
-st.markdown(f"""<div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:3px; padding:8px 14px; margin-bottom:12px; font-size:12px; color:#1e40af;">
-    <b>ℹ️ Transparent Synthetic Telemetry Disclosure:</b> Telemetry is generated via a 4-stroke aero-piston physics synthesizer (ISA atmosphere + MVEM equations) for DRDO SIH26054 validation without requiring physical engine test cell access. (Target: Rotax 914 Turbo MALE UAV Engine).
-</div>
-<div class="avionics-header">
+st.markdown(f"""<div class="avionics-header">
     <div>
         <span class="hud-badge badge-cyan">DRDO / iDEX PS 26054</span>
         <span class="hud-badge badge-emerald"><span class="pulse-dot"></span>LIVE DOWNLINK</span>
@@ -631,43 +628,6 @@ with kpi5:
         <div class="hud-sub">Confidence: {conf}%</div>
     </div>""", unsafe_allow_html=True)
 
-# ── VISIBLE FAULT INJECTION -> CONSEQUENCE CHAIN (Requirement 3) ──
-chain_step_bg = "#fef2f2" if (ai_res["is_anomaly"] or ai_res["fault_class_id"] != 0) else "#ffffff"
-st.markdown(f"""<div style="background: {chain_step_bg}; border: 1px solid #e5e5e5; border-left: 3px solid #2563eb; padding: 14px 18px; border-radius: 3px; margin: 12px 0 16px 0;">
-    <div style="font-size: 10px; font-weight: 700; color: #2563eb; letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 6px;">⚡ VISIBLE FAULT INJECTION → CONSEQUENCE CHAIN (JUDGE VERIFICATION)</div>
-    <div style="display: flex; gap: 8px; justify-content: space-between; align-items: center; text-align: center; flex-wrap: wrap;">
-        <div style="flex:1; min-width: 110px; background:#fafaf9; border:1px solid #e5e5e5; padding:8px; border-radius:2px;">
-            <div style="font-size:9px; color:#6b7280; font-weight:600;">STEP 1: FAULT TRIGGER</div>
-            <div style="font-size:12px; font-weight:700; color:#1a1a1a;">{fault_choice}</div>
-        </div>
-        <div style="color:#2563eb; font-weight:700;">➔</div>
-        <div style="flex:1; min-width: 110px; background:#fafaf9; border:1px solid #e5e5e5; padding:8px; border-radius:2px;">
-            <div style="font-size:9px; color:#6b7280; font-weight:600;">STEP 2: RESIDUAL ΔS</div>
-            <div style="font-size:12px; font-weight:700; color:#2563eb;">ΔEGT: {residuals['delta_egt_c']:+.1f}°C</div>
-        </div>
-        <div style="color:#2563eb; font-weight:700;">➔</div>
-        <div style="flex:1; min-width: 110px; background:#fafaf9; border:1px solid #e5e5e5; padding:8px; border-radius:2px;">
-            <div style="font-size:9px; color:#6b7280; font-weight:600;">STEP 3: HEALTH DROP</div>
-            <div style="font-size:12px; font-weight:700; color:#16a34a;">EHI: {ehi}%</div>
-        </div>
-        <div style="color:#2563eb; font-weight:700;">➔</div>
-        <div style="flex:1; min-width: 110px; background:#fafaf9; border:1px solid #e5e5e5; padding:8px; border-radius:2px;">
-            <div style="font-size:9px; color:#6b7280; font-weight:600;">STEP 4: ANOMALY SCORE</div>
-            <div style="font-size:12px; font-weight:700; color:#dc2626;">{anom_sc}</div>
-        </div>
-        <div style="color:#2563eb; font-weight:700;">➔</div>
-        <div style="flex:1; min-width: 110px; background:#fafaf9; border:1px solid #e5e5e5; padding:8px; border-radius:2px;">
-            <div style="font-size:9px; color:#6b7280; font-weight:600;">STEP 5: CLASSIFIER</div>
-            <div style="font-size:12px; font-weight:700; color:#d97706;">{pred_f}</div>
-        </div>
-        <div style="color:#2563eb; font-weight:700;">➔</div>
-        <div style="flex:1; min-width: 110px; background:#fafaf9; border:1px solid #e5e5e5; padding:8px; border-radius:2px;">
-            <div style="font-size:9px; color:#6b7280; font-weight:600;">STEP 6: RUL & ALERT</div>
-            <div style="font-size:12px; font-weight:700; color:#2563eb;">{rul_hrs} hrs</div>
-        </div>
-    </div>
-</div>""", unsafe_allow_html=True)
-
 st.divider()
 
 # Navigation Tabs (Clean Bespoke Aerospace Cockpit Interface)
@@ -682,19 +642,6 @@ tab0, tab1, tab2, tab3, tab4, tab5 = st.tabs([
 
 # TAB 0: AVIONICS HUD & COCKPIT INSTRUMENTS
 with tab0:
-    # ── EXPECTED VS ACTUAL SIDE-BY-SIDE TABLE (Requirement 2) ──
-    st.markdown("""<div class="section-eyebrow">EXPECTED VS ACTUAL SENSOR TELEMETRY (MVEM PHYSICS TWIN SIDE-BY-SIDE)</div>""", unsafe_allow_html=True)
-    
-    twin_comparison_df = pd.DataFrame([
-        {"Sensor Parameter": "Engine Speed (RPM)", "Actual Reading": f"{frame['rpm']} RPM", "MVEM Physics Expected": f"{frame['rpm'] - residuals['delta_egt_c']*0.01:.1f} RPM", "Residual (ΔS)": f"{residuals['delta_egt_c']*0.01:+.1f}", "Status": "✅ OK"},
-        {"Sensor Parameter": "Exhaust Gas Temp (EGT)", "Actual Reading": f"{frame['egt_c']} °C", "MVEM Physics Expected": f"{mvem_exp['exp_egt_c']} °C", "Residual (ΔS)": f"{residuals['delta_egt_c']:+.1f} °C", "Status": "🚨 DEVIATED" if abs(residuals['delta_egt_c']) > 30 else "✅ OK"},
-        {"Sensor Parameter": "Cylinder Head Temp (CHT)", "Actual Reading": f"{frame['cht_c']} °C", "MVEM Physics Expected": f"{mvem_exp['exp_cht_c']} °C", "Residual (ΔS)": f"{residuals['delta_cht_c']:+.1f} °C", "Status": "⚠️ WARN" if abs(residuals['delta_cht_c']) > 20 else "✅ OK"},
-        {"Sensor Parameter": "Oil Pressure", "Actual Reading": f"{frame['oil_pressure_bar']} bar", "MVEM Physics Expected": f"{mvem_exp['exp_oil_pressure_bar']} bar", "Residual (ΔS)": f"{residuals['delta_oil_pressure_bar']:+.2f} bar", "Status": "🚨 DEVIATED" if abs(residuals['delta_oil_pressure_bar']) > 1.0 else "✅ OK"},
-        {"Sensor Parameter": "Fuel Flow Rate", "Actual Reading": f"{frame['fuel_flow_lh']} L/h", "MVEM Physics Expected": f"{mvem_exp['exp_fuel_flow_lh']} L/h", "Residual (ΔS)": f"{residuals['delta_fuel_flow_lh']:+.2f} L/h", "Status": "✅ OK"},
-        {"Sensor Parameter": "Vibration RMS", "Actual Reading": f"{frame['vibration_rms']} mm/s", "MVEM Physics Expected": f"{mvem_exp['exp_vibration_rms']} mm/s", "Residual (ΔS)": f"{residuals['delta_vibration_rms']:+.2f} mm/s", "Status": "🚨 DEVIATED" if abs(residuals['delta_vibration_rms']) > 2.0 else "✅ OK"},
-    ])
-    st.dataframe(twin_comparison_df, use_container_width=True)
-
     st.markdown("""<div style="background: #ffffff; padding: 22px; border-radius: 3px; border: 1px solid #e5e5e5; margin-bottom: 20px;">
         <h3 style="font-family: 'Inter', sans-serif; color: #1a1a1a; margin-top: 0; font-size: 16px; font-weight: 700; letter-spacing: 0.5px;">🛩️ PRIMARY FLIGHT DISPLAY (PFD) & TACTICAL RADAR HUD</h3>
         <p style="color: #6b7280; font-size: 13px; margin-bottom: 20px;">Real-Time Aircraft Flight Attitude, Radar Target Scanning, and Engine Dial Telemetry</p>
