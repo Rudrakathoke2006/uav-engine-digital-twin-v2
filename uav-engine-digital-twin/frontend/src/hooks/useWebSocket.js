@@ -6,15 +6,25 @@ export function useWebSocket(missionId) {
   useEffect(() => {
     if (!missionId) return;
 
-    const ws = new WebSocket(
-      `ws://localhost:8000/ws/missions/${missionId}`
-    );
+    const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+    const host = import.meta.env.VITE_WS_URL || window.location.host;
+    const wsUrl = host.includes("http") || host.includes("ws") 
+      ? host 
+      : `${protocol}//${host}/ws/missions/${missionId}`;
 
-    ws.onmessage = (event) => {
-      setState(JSON.parse(event.data));
+    let ws;
+    try {
+      ws = new WebSocket(wsUrl);
+      ws.onmessage = (event) => {
+        setState(JSON.parse(event.data));
+      };
+    } catch (e) {
+      console.warn("WebSocket connection skipped or unavailable:", e);
+    }
+
+    return () => {
+      if (ws) ws.close();
     };
-
-    return () => ws.close();
   }, [missionId]);
 
   return state;
