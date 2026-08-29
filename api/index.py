@@ -19,14 +19,17 @@ class VercelPathFixMiddleware:
 
     async def __call__(self, scope, receive, send):
         if scope.get("type") == "http":
-            path = scope.get("path", "")
-            if path in ("/api/index.py", "/api/index", "/api/index.py/", "/api/index/"):
+            headers = dict(scope.get("headers", []))
+            matched_path = headers.get(b"x-matched-path", b"").decode("utf-8")
+            forwarded_uri = headers.get(b"x-forwarded-uri", b"").decode("utf-8")
+            
+            req_path = matched_path or forwarded_uri or scope.get("path", "")
+            if req_path and req_path not in ("/api/index.py", "/api/index", "/api/index.py/", "/api/index/"):
+                scope["path"] = req_path
+            else:
                 scope["path"] = "/"
-            elif path.startswith("/api/index.py/"):
-                scope["path"] = path[len("/api/index.py"):]
-            elif path.startswith("/api/index/"):
-                scope["path"] = path[len("/api/index"):]
         await self.app(scope, receive, send)
 
 app = VercelPathFixMiddleware(fastapi_app)
+
 
