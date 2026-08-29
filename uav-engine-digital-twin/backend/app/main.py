@@ -7,7 +7,7 @@ app = FastAPI(title="UAV Engine Digital Twin API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000", "http://localhost:8501"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -23,6 +23,10 @@ app.include_router(maintenance.router, prefix="/api")
 app.include_router(simulation.router, prefix="/api")
 app.include_router(replay.router, prefix="/api")
 app.include_router(stream.router)
+
+@app.get("/")
+def root():
+    return {"status": "ok", "message": "UAV Engine Digital Twin API is live", "swagger_docs": "/docs"}
 
 @app.get("/health")
 def health():
