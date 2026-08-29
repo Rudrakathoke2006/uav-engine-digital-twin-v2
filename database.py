@@ -11,7 +11,18 @@ import pandas as pd
 
 class AeroTwinDatabase:
     def __init__(self, db_path: str = "aerotwin_mvp.db", schema_path: str = "schema.sql"):
-        self.db_path = db_path
+        target_path = db_path
+        if os.environ.get("VERCEL") or not os.access(os.path.dirname(os.path.abspath(db_path)) or ".", os.W_OK):
+            tmp_db = os.path.join("/tmp", os.path.basename(db_path))
+            if not os.path.exists(tmp_db) and os.path.exists(db_path):
+                try:
+                    import shutil
+                    shutil.copy2(db_path, tmp_db)
+                except Exception:
+                    pass
+            target_path = tmp_db
+
+        self.db_path = target_path
         self.schema_path = schema_path
         self.init_database()
 
