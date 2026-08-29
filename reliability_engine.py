@@ -132,9 +132,9 @@ class MissionReliabilityEngine:
         
         return {
             "success_probability_pct": res["mission_completion_prob_pct"],
-            "predicted_end_health_pct": res["projected_end_ehi" if "projected_end_ehi" in res else "projected_end_health_index"],
+            "predicted_end_health_pct": res["projected_end_health_index"],
             "degradation_rate_per_hr": deg_rate,
-            "end_health_distribution": dist,
+            "end_health_distribution": dist.tolist(),
             "risk_level": res["risk_level"],
             "maintenance_advisory": res["maintenance_advisory"]
         }
