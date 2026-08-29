@@ -1,0 +1,39 @@
+/* Defense Grade Dark GCS Theme */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #0b0f19;
+  color: #e2e8f0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.gcs-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.gcs-sidebar {
+  width: 260px;
+  background: #0f172a;
+  border-right: 1px solid #334155;
+  padding: 20px;
+}
+
+.gcs-main {
+  flex: 1;
+  padding: 24px;
+  background: #0b0f19;
+}
+
+.gcs-card {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border: 1px solid #334155;
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+.status-healthy { color: #10b981; font-weight: bold; }
+.status-warning { color: #f59e0b; font-weight: bold; }
+.status-critical { color: #ef4444; font-weight: bold; }

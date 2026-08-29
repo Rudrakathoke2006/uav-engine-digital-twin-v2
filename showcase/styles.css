@@ -1,0 +1,237 @@
+/* ======================================================
+   SIH26054 — UAV Engine Digital Twin  |  Showcase Page
+   ====================================================== */
+
+/* ---------- Reset & Base ---------- */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;line-height:1.65;color:#1e293b;background:#fff}
+img{max-width:100%;display:block}
+a{text-decoration:none;color:inherit}
+
+/* ---------- Palette ---------- */
+:root{
+  --blue:#2563eb;
+  --blue-light:#3b82f6;
+  --coral:#f06449;
+  --teal:#0d9488;
+  --dark:#0a0a0a;
+  --dark-card:#141414;
+  --grey-bg:#f4f5f7;
+  --border:#e2e8f0;
+  --text-primary:#0f172a;
+  --text-secondary:#475569;
+  --text-muted:#94a3b8;
+  --radius:12px;
+  --section-pad:100px 0;
+}
+
+/* ---------- Typography ---------- */
+.eyebrow{
+  font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;
+  font-weight:600;color:var(--blue);margin-bottom:12px;
+}
+h1{font-size:clamp(2rem,4.2vw,3.2rem);font-weight:700;line-height:1.18;letter-spacing:-.02em;color:var(--text-primary)}
+h2{font-size:clamp(1.6rem,3.2vw,2.4rem);font-weight:700;line-height:1.22;letter-spacing:-.015em}
+h3{font-size:1.15rem;font-weight:600;line-height:1.35;color:var(--text-primary)}
+p.lead{font-size:1.1rem;color:var(--text-secondary);line-height:1.75;max-width:540px}
+p.body{font-size:.97rem;color:var(--text-secondary);line-height:1.72}
+
+/* ---------- Layout ---------- */
+.container{width:100%;max-width:1180px;margin:0 auto;padding:0 28px}
+.section{padding:var(--section-pad)}
+.section--dark{background:var(--dark);color:#fff}
+.section--grey{background:var(--grey-bg)}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+
+/* ================================================================
+   SECTION 1 — HERO
+   ================================================================ */
+#hero{padding:80px 0 100px}
+
+.hero-text{display:flex;flex-direction:column;justify-content:center}
+.hero-text h1{margin-bottom:24px}
+.hero-text p.lead{margin-bottom:0}
+
+/* Exploded engine illustration container */
+.engine-exploded{position:relative;width:100%;aspect-ratio:4/5;max-width:480px;margin:0 auto}
+
+.engine-exploded svg{width:100%;height:100%}
+
+/* Callout boxes */
+.callout{
+  position:absolute;
+  padding:10px 14px;
+  border-radius:8px;
+  border:1.5px solid;
+  background:#fff;
+  font-size:.72rem;
+  line-height:1.45;
+  max-width:210px;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+.callout strong{display:block;font-weight:700;font-size:.75rem;margin-bottom:2px}
+.callout--blue{border-color:var(--blue);color:var(--blue)}
+.callout--blue strong{color:var(--blue)}
+.callout--coral{border-color:var(--coral);color:var(--coral)}
+.callout--coral strong{color:var(--coral)}
+.callout--teal{border-color:var(--teal);color:var(--teal)}
+.callout--teal strong{color:var(--teal)}
+
+/* Leader lines drawn via SVG inside the illustration */
+
+/* ================================================================
+   SECTION 2 — MODULE FLOWCHART
+   ================================================================ */
+#modules{padding:100px 0 120px;text-align:center}
+#modules h2{color:#fff;margin-bottom:64px}
+
+.ring-wrapper{position:relative;width:640px;height:640px;margin:0 auto}
+
+/* Center logo */
+.ring-center{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  text-align:center;z-index:2;
+}
+.ring-center .hex-logo{
+  width:64px;height:72px;margin:0 auto 10px;
+  background:transparent;border:2px solid rgba(255,255,255,.35);
+  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.72rem;font-weight:700;color:#fff;letter-spacing:.08em;
+}
+.ring-center span{font-size:.75rem;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase}
+
+/* Ring nodes */
+.ring-node{
+  position:absolute;width:170px;text-align:center;
+  transform:translate(-50%,-50%);
+  z-index:3;
+}
+.ring-node .icon-hex{
+  width:56px;height:62px;margin:0 auto 10px;
+  border:1.5px solid rgba(255,255,255,.3);
+  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.05);
+}
+.ring-node .icon-hex svg{width:22px;height:22px;stroke:#fff;stroke-width:1.5;fill:none}
+.ring-node h4{font-size:.82rem;font-weight:600;color:#fff;margin-bottom:4px}
+.ring-node p{font-size:.72rem;color:var(--text-muted);line-height:1.5}
+
+/* Connector lines (SVG layer behind) */
+.ring-lines{position:absolute;inset:0;z-index:0}
+.ring-lines line{stroke:rgba(255,255,255,.15);stroke-width:1}
+
+/* Node positions (6 nodes, 60° apart around center 320, 320) */
+.ring-node.node-1{top:75px;left:320px}
+.ring-node.node-2{top:190px;left:520px}
+.ring-node.node-3{top:450px;left:520px}
+.ring-node.node-4{top:565px;left:320px}
+.ring-node.node-5{top:450px;left:120px}
+.ring-node.node-6{top:190px;left:120px}
+
+
+
+
+/* ================================================================
+   SECTION 3 — AIRFRAME VISUALIZATION
+   ================================================================ */
+#airframe{padding:100px 0}
+#airframe h2{margin-bottom:56px}
+
+.airframe-image{
+  border-radius:var(--radius);
+  overflow:hidden;
+  background:#e8ecf1;
+  box-shadow:0 12px 40px rgba(0,0,0,.08);
+}
+.airframe-image svg{width:100%;display:block}
+
+.airframe-text h3{font-size:1.35rem;margin-bottom:20px;color:var(--text-primary)}
+.airframe-text p{margin-bottom:16px}
+
+/* ================================================================
+   SECTION 4 — TECH GRID
+   ================================================================ */
+#techgrid{padding:100px 0}
+#techgrid h2{text-align:center;margin-bottom:56px;color:var(--text-primary)}
+
+.card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:32px 28px;
+  transition:box-shadow .25s ease,transform .25s ease;
+}
+.card:hover{
+  box-shadow:0 8px 28px rgba(0,0,0,.07);
+  transform:translateY(-3px);
+}
+.card .card-icon{
+  width:40px;height:40px;margin-bottom:18px;
+  stroke:var(--blue);stroke-width:1.5;fill:none;
+}
+.card h3{margin-bottom:10px}
+.card p{font-size:.92rem;color:var(--text-secondary);line-height:1.65}
+
+/* ================================================================
+   SECTION 5 — CLOSING SHOWCASE
+   ================================================================ */
+#showcase{padding:100px 0 120px}
+#showcase h2{color:#fff;text-align:center;margin-bottom:72px}
+
+.showcase-row{
+  display:grid;grid-template-columns:1fr 1fr;gap:56px;
+  align-items:center;margin-bottom:64px;
+}
+.showcase-row:last-child{margin-bottom:0}
+.showcase-row.reverse{direction:rtl}
+.showcase-row.reverse>*{direction:ltr}
+
+.showcase-panel{
+  background:var(--dark-card);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:var(--radius);
+  overflow:hidden;
+  padding:32px;
+  aspect-ratio:16/10;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+.showcase-panel svg{width:100%;max-height:260px}
+.showcase-panel .panel-caption{
+  position:absolute;bottom:14px;left:18px;
+  font-size:.68rem;color:var(--text-muted);letter-spacing:.04em;
+}
+
+.showcase-text h3{font-size:1.3rem;color:var(--blue-light);margin-bottom:14px;font-weight:700}
+.showcase-text p{font-size:.95rem;color:rgba(255,255,255,.7);line-height:1.72}
+
+/* ================================================================
+   RESPONSIVE
+   ================================================================ */
+@media(max-width:960px){
+  .two-col,.showcase-row{grid-template-columns:1fr;gap:40px}
+  .showcase-row.reverse{direction:ltr}
+  .three-col{grid-template-columns:1fr 1fr;gap:22px}
+  .ring-wrapper{width:100%;height:auto;aspect-ratio:1}
+  .ring-node{width:140px}
+  .ring-node h4{font-size:.75rem}
+  .ring-node p{font-size:.65rem}
+  .engine-exploded{max-width:360px}
+}
+@media(max-width:600px){
+  :root{--section-pad:64px 0}
+  .container{padding:0 18px}
+  .three-col{grid-template-columns:1fr}
+  .ring-wrapper{width:320px;height:320px}
+  .ring-node{width:110px}
+  .ring-node .icon-hex{width:40px;height:44px}
+  .ring-node h4{font-size:.68rem}
+  .ring-node p{display:none}
+  .callout{max-width:160px;font-size:.65rem;padding:7px 10px}
+}

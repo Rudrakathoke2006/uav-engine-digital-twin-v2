@@ -1,0 +1,38 @@
+{
+  "anomaly_model": {
+    "type": "IsolationForest",
+    "version": "1.0",
+    "trained_on": "normal + environmental scenarios",
+    "features": [
+      "rpm",
+      "cht_c",
+      "egt_c",
+      "oil_pressure_psi",
+      "oil_temp_c",
+      "fuel_flow_lph",
+      "vibration_g",
+      "battery_voltage_v",
+      "throttle_pct",
+      "rpm_mean_10",
+      "oil_pressure_slope_30",
+      "oil_temp_slope_30",
+      "vibration_mean_10"
+    ]
+  },
+  "fault_model": {
+    "type": "RandomForestClassifier",
+    "classes": [
+      "normal",
+      "lubrication_degradation",
+      "overheating",
+      "injector_fault",
+      "abnormal_vibration"
+    ]
+  },
+  "rul_model": {
+    "supported_modes": [
+      "lubrication_degradation"
+    ],
+    "metric": "MAE_hours"
+  }
+}

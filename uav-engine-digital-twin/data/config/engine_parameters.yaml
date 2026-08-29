@@ -1,0 +1,24 @@
+rpm:
+  unit: rpm
+  normal_min: 2500
+  normal_max: 5200
+cht_c:
+  unit: degC
+  normal_min: 120
+  normal_max: 210
+egt_c:
+  unit: degC
+  normal_min: 500
+  normal_max: 780
+oil_pressure_psi:
+  unit: psi
+  normal_min: 40
+  normal_max: 70
+oil_temp_c:
+  unit: degC
+  normal_min: 70
+  normal_max: 115
+vibration_g:
+  unit: g
+  normal_min: 0.05
+  normal_max: 0.60

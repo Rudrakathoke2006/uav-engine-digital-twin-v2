@@ -1,0 +1,35 @@
+lubrication_degradation:
+  affected:
+    oil_pressure_psi:
+      direction: down
+      rate_per_minute: 0.03
+    oil_temp_c:
+      direction: up
+      rate_per_minute: 0.02
+    vibration_g:
+      direction: up
+      rate_per_minute: 0.0008
+
+overheating:
+  affected:
+    cht_c:
+      direction: up
+      rate_per_minute: 0.05
+    egt_c:
+      direction: up
+      rate_per_minute: 0.07
+
+injector_fault:
+  affected:
+    egt_c:
+      direction: unstable
+      delta: 45.0
+    fuel_flow_lph:
+      direction: down
+      rate_per_minute: 0.02
+
+abnormal_vibration:
+  affected:
+    vibration_g:
+      direction: up
+      rate_per_minute: 0.004
