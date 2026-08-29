@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm --prefix uav-engine-digital-twin/frontend run build",
+  "buildCommand": "npm --prefix uav-engine-digital-twin/frontend install && npm --prefix uav-engine-digital-twin/frontend run build",
   "outputDirectory": "uav-engine-digital-twin/frontend/dist",
   "rewrites": [
     {
