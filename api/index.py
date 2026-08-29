@@ -11,24 +11,8 @@ sys.path = [p for p in sys.path if os.path.abspath(p) != os.path.abspath(root_di
 if backend_dir not in sys.path:
     sys.path.insert(0, backend_dir)
 
-from urllib.parse import parse_qs
-from app.main import app as fastapi_app
+from app.main import app
 
-class VercelPathFixMiddleware:
-    def __init__(self, app):
-        self.app = app
-
-    async def __call__(self, scope, receive, send):
-        if scope.get("type") == "http":
-            query_string = scope.get("query_string", b"").decode("utf-8")
-            qs_dict = parse_qs(query_string)
-            if "__path__" in qs_dict and qs_dict["__path__"]:
-                scope["path"] = qs_dict["__path__"][0]
-            elif scope.get("path") in ("/api/index.py", "/api/index", "/api/index.py/", "/api/index/"):
-                scope["path"] = "/"
-        await self.app(scope, receive, send)
-
-app = VercelPathFixMiddleware(fastapi_app)
 
 
 
