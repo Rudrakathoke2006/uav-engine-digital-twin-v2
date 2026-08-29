@@ -1,0 +1,9 @@
+.git
+.streamlit
+assets
+showcase
+mq-9_reaper_uav_drone
+mq-9_reaper_uav_drone.glb
+*.db
+__pycache__
+.env
